@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: "vivacluster"
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: "vivacluster"
+    spec:
+      containers:
+        - name: "vivacluster"
+          image: "djangoregistryayan.azurecr.io/vivacluster"
+          ports:
+          - containerPort: 82
