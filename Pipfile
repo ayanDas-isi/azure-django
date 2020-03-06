@@ -8,8 +8,4 @@ coverage = "*"
 flake8 = "*"
 
 [packages]
-gunicorn = "==19.7.1"
-whitenoise = "==5.0"
-ibmcloudenv = "*"
-livereload = "*"
-Django = ">=2.2.8"
+
