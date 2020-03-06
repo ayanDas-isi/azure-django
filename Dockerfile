@@ -1,17 +1,19 @@
-FROM python:3.7
-ENV PYTHONUNBUFFERED 1
-RUN apt-get update
-RUN apt-get install -y swig libssl-dev dpkg-dev netcat
+FROM registry.access.redhat.com/ubi8/python-36
 
-RUN pip install -U --pre pip poetry
-ADD poetry.lock /code/
-ADD pyproject.toml /code/
-RUN poetry config virtualenvs.create false
-WORKDIR /code
-RUN poetry install --no-dev --no-interaction --no-root
+WORKDIR /app
 
-ADD misc/dokku/CHECKS /app/
-ADD misc/dokku/* /code/
+COPY Pipfile* /app/
 
-COPY . /code/
-RUN /code/manage.py collectstatic --noinput
+## NOTE - rhel enforces user container permissions stronger ##
+USER root
+RUN yum -y install python3-pip wget
+
+RUN pip install --upgrade pip \
+  && pip install --upgrade pipenv 
+
+RUN pipenv install --system --ignore-pipfile --deploy
+
+USER 1001
+
+COPY . /app
+CMD ["gunicorn", "-b", "0.0.0.0:3000", "--env", "DJANGO_SETTINGS_MODULE=pythondjangoapp.settings.production", "pythondjangoapp.wsgi", "--timeout 120"]
