@@ -1,5 +1,5 @@
 # requirements.txt file
 Django==2.2.3
 ibm-cos-sdk
-pandas==0.24.2
+pandas
 requests
