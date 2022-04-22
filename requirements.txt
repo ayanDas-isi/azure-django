@@ -1,5 +1,5 @@
 # requirements.txt file
-Django==2.2.3
+Django==2.2.28
 ibm-cos-sdk
 pandas
 requests
